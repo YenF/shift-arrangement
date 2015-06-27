@@ -1,0 +1,16 @@
+
+(gedit:3773): Gtk-CRITICAL **: _gtk_widget_captured_event: assertion 'WIDGET_REALIZED_FOR_EVENT (widget, event)' failed
+
+(gedit:3773): libpeas-WARNING **: Error loading plugin 'tabswitch'
+
+(gedit:3773): GVFS-RemoteVolumeMonitor-WARNING **: Owner of volume monitor org.gtk.Private.MTPVolumeMonitor disconnected from the bus; removing drives/volumes/mounts
+
+(gedit:3773): GVFS-RemoteVolumeMonitor-WARNING **: Owner of volume monitor org.gtk.Private.GPhoto2VolumeMonitor disconnected from the bus; removing drives/volumes/mounts
+
+(gedit:3773): GVFS-RemoteVolumeMonitor-WARNING **: Owner of volume monitor org.gtk.Private.AfcVolumeMonitor disconnected from the bus; removing drives/volumes/mounts
+
+(gedit:3773): GVFS-RemoteVolumeMonitor-WARNING **: Owner of volume monitor org.gtk.Private.UDisks2VolumeMonitor disconnected from the bus; removing drives/volumes/mounts
+g_dbus_connection_real_closed: Remote peer vanished with error: Error receiving message: Connection reset by peer (g-io-error-quark, 0). Exiting.
+
+(gedit:2361): Gdk-WARNING **: gedit: Fatal IO error 11 (Resource temporarily unavailable) on X server :0.
+
