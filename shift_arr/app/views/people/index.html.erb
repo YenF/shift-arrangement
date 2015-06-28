@@ -16,7 +16,7 @@
   <tbody>
     <% @people.each do |person| %>
       <tr>
-        <td><%= person.id %></td>      
+        <td><%= person.pid %></td>      
         <td><%= person.name %></td>
         <td>
 			<% if person.AB_4 %>
@@ -26,9 +26,14 @@
 			<%= "AB_14 " %>
 			<% end %>
         </td>
-        <td><%= link_to 'Show', person %></td>
-        <td><%= link_to 'Edit', edit_person_path(person) %></td>
-        <td><%= link_to 'Destroy', person, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+        	<% if person.with_whom!=nil && person.with_whom!="" %>
+        	<%= Person.find(person.with_whom).name %>
+        	<% end %>
+        </td>
+        
+        <td><%= button_to 'Edit', edit_person_path(person), :method => :get %></td>
+        <td><%= button_to 'Destroy', person, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -36,4 +41,4 @@
 
 <br>
 
-<%= link_to 'New Person', new_person_path %>
+<%= button_to 'New Person', new_person_path, :method => :get %>

@@ -12,18 +12,29 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :id %><br>
-    <%= f.text_field :id %>
+    <%= f.label :pid %><br>
+    <%= f.text_field :pid %>
   </div>
   <div class="field">
     <%= f.label :name %><br>
     <%= f.text_area :name %>
   </div>
   <div class="field">
-    <%= f.label :AB_4 %><br>
+    <%= f.label :AB_4 %>
     <%= f.check_box :AB_4 %>
-    <%= f.label :AB_14 %><br>
+    <%= f.label :AB_14 %>
     <%= f.check_box :AB_14 %>
+  </div>
+  <div class="field">
+    <%= f.label :with_whom %><br>
+    <% if !@person.blank? %>
+    <%= f.collection_select(:with_whom, Person.all.where("id != ?", @person.id) , :id, :name, :include_blank => true) %>
+    <% else %>
+    <%= f.collection_select(:with_whom, Person.all , :id, :name, :include_blank => true) %>
+    <% end %>
+    <%# Problems: 
+    	1. can't select 'none' 
+    %>
   </div>
 
   <div class="actions">

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150626085357) do
+ActiveRecord::Schema.define(version: 20150628095221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20150626085357) do
     t.string   "with_whom"
     t.boolean  "AB_4"
     t.boolean  "AB_14"
+    t.string   "pid"
   end
 
 end
