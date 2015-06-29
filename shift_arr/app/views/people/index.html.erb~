@@ -41,4 +41,5 @@
 
 <br>
 
-<%= button_to 'New Person', new_person_path %>
+<%= button_to 'New Person', new_person_path, :method => :get %>
+<%= button_to 'Generate Table', "/people/people#generateTable", :method => :get %>

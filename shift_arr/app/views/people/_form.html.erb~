@@ -27,7 +27,7 @@
   </div>
   <div class="field">
     <%= f.label :with_whom %><br>
-    <% if !@person.blank? %>
+    <% if @person.id != nil %>
     <%= f.collection_select(:with_whom, Person.all.where("id != ?", @person.id) , :id, :name, :include_blank => true) %>
     <% else %>
     <%= f.collection_select(:with_whom, Person.all , :id, :name, :include_blank => true) %>

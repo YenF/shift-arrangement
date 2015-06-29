@@ -20,3 +20,6 @@ You must use marks, character numbers, or line numbers to preserve a position ac
 You can apply tags and insert marks without invalidating your iterators,
 but any mutation that affects 'indexable' buffer contents (contents that can be referred to by character offset)
 will invalidate all outstanding iterators
+
+(gedit:2699): Gdk-WARNING **: gedit: Fatal IO error 11 (Resource temporarily unavailable) on X server :0.
+

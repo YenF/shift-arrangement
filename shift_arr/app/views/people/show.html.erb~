@@ -14,8 +14,10 @@
   <strong>Shifts:</strong>
   <% if @person.AB_4 %>
   <%= "AB_4 " %>
+  <% end %>
   <% if @person.AB_14 %>
   <%= "AB_14 " %>
+  <% end %>
 </p>
 
 <%= link_to 'Edit', edit_person_path(@person) %> |
