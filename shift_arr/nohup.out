@@ -23,3 +23,7 @@ will invalidate all outstanding iterators
 
 (gedit:2699): Gdk-WARNING **: gedit: Fatal IO error 11 (Resource temporarily unavailable) on X server :0.
 
+
+(gedit:4404): Gtk-CRITICAL **: _gtk_widget_captured_event: assertion 'WIDGET_REALIZED_FOR_EVENT (widget, event)' failed
+
+(gedit:4404): Gtk-CRITICAL **: _gtk_widget_captured_event: assertion 'WIDGET_REALIZED_FOR_EVENT (widget, event)' failed

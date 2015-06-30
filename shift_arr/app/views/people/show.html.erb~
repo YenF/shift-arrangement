@@ -1,24 +1,38 @@
-<p id="notice"><%= notice %></p>
+<%
+	mon14=2
+	tue14=2
+	thr14=2
+	total14 = mon14+tue14+thr14
+	# 2 people left to be assigned
+	sat4=4
+	#sat = morning shift for 4 people, need to cut one shift from M~F af
+	totalAB_14 = Person.where(:AB_14 => true).count
+	totalA6_4 = Person.where(:A6_4 => true).count
 
-<p>
-  <strong>ID:</strong>
-  <%= @person.id %>
-</p>
+	Person.all.each do |p|
+		#we random person by person, then go into its shift
+		place14 = false #set to false to prevent bug
+		has14 = false
+		##########
+		placeA6 = false
+		#do not need hasA6
+		
+		if p.AB_14==true # random if assigned
+			if rand(1..totalAB_14)<=total14 #1~8 have 6
+				place14 = true
+				total14-=1
+			end
+			totalAB_14-=1 #anyway totalAB_14 will minus 1 so that people afterward will 
+			has14 = false
+		end
+		if p.A6_4==true 
+			if rand(1..totalA6_4)<=sat4
+				placeA6 = true
+				sat4 -= 1 #4 -> 3
+			end
+			totalA6_4 -= 1
+		end
+	end
+%>
 
-<p>
-  <strong>Name:</strong>
-  <%= @person.name %>
-</p>
-
-<p>
-  <strong>Shifts:</strong>
-  <% if @person.AB_4 %>
-  <%= "AB_4 " %>
-  <% end %>
-  <% if @person.AB_14 %>
-  <%= "AB_14 " %>
-  <% end %>
-</p>
-
-<%= link_to 'Edit', edit_person_path(@person) %> |
 <%= link_to 'Back', people_path %>
