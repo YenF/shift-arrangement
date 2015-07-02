@@ -8,11 +8,15 @@
 	#sat = morning shift for 4 people, need to cut one shift from M~F af
 	totalAB_14 = Person.where(:AB_14 => true).count
 	totalA6_4 = Person.where(:A6_4 => true).count
-
+	#reset shifts
+	Shift.destroy_all #due to one to one association, we clear the shift every time to keep it clean.
+	
 	Person.all.each do |p|
+		#Create a default shift with all shift "4", then change something.
+		s = Shift.create(:A1=>4, :A2=>4, :A3=>4, :A4=>4, :A5=>4,
+			:B1=>4, :B2=>4, :B3=>4, :B4=>4, :B5=>4, :A6=>0)
 		#we random person by person, then go into its shift
 		place14 = false #set to false to prevent bug
-		has14 = false
 		##########
 		placeA6 = false
 		#do not need hasA6
@@ -21,9 +25,36 @@
 			if rand(1..totalAB_14)<=total14 #1~8 have 6
 				place14 = true
 				total14-=1
+				#now we decide which day
+				while true do
+					putOn = rand(1..3) #1=Mon 2=Tue 3=Thr
+					if putOn==1 && mon14!=0  
+						mon14-=1 
+						break 
+					end
+					if putOn==2 && tue14!=0  
+						tue14-=1 
+						break 
+					end
+					if putOn==3 && thr14!=0  
+						thr14-=1 
+						break 
+					end
+				end #rand until find a solution...
+				if putOn==1
+					s.A1=14
+					s.B1=14
+				end
+				if putOn==2
+					s.A2=14
+					s.B2=14
+				end
+				if putOn==3
+					s.A4=14
+					s.B4=14
+				end
 			end
 			totalAB_14-=1 #anyway totalAB_14 will minus 1 so that people afterward will 
-			has14 = false
 		end
 		if p.A6_4==true 
 			if rand(1..totalA6_4)<=sat4
@@ -31,8 +62,91 @@
 				sat4 -= 1 #4 -> 3
 			end
 			totalA6_4 -= 1
-		end
-	end
+			while true do
+				shiftOff = rand(1..5) #decide which day afternoon bye~
+				if shiftOff==1
+					if s.B1 != 14 #AB_14 couldn't off!
+						s.B1 = 0
+						break
+					end
+				end
+				if shiftOff==2
+					if s.B2 != 14 #AB_14 couldn't off!
+						s.B2 = 0
+						break
+					end
+				end
+				if shiftOff==3
+					if s.B3 != 14 #AB_14 couldn't off!
+						s.B3 = 0
+						break
+					end
+				end
+				if shiftOff==4
+					if s.B4 != 14 #AB_14 couldn't off!
+						s.B4 = 0
+						break
+					end
+				end
+				if shiftOff==5
+					if s.B5 != 14 #AB_14 couldn't off!
+						s.B5 = 0
+						break
+					end
+				end
+			end #while shiftOff
+		end #if A6_4
+		s.save
+		p.shift=s
+	end #each person
 %>
+
+
+<table border=2 align="center" width="80%">
+<caption> Arranged Shift </caption>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th colspan="2">Mon</th>
+      <th colspan="2">Tue</th>
+      <th colspan="2">Wed</th>
+      <th colspan="2">Thr</th>
+      <th colspan="2">Fri</th>
+      <th>Sat</th>
+    </tr>
+    <tr>
+    	<th colspan="2"></th>
+    	<th>A</th>
+    	<th>B</th>
+    	<th>A</th>
+    	<th>B</th>
+    	<th>A</th>
+    	<th>B</th>
+    	<th>A</th>
+    	<th>B</th>
+    	<th>A</th>
+    	<th>B</th>
+		<th>A</th>
+	</tr>
+  </thead>
+  <tbody>
+<% @people.each do |peo| %>
+	<tr>
+		<th><%= peo.pid %></th>
+		<th><%= peo.name %></th>
+		<th><%= peo.shift.A1 %></th>
+		<th><%= peo.shift.B1 %></th>
+		<th><%= peo.shift.A2 %></th>
+		<th><%= peo.shift.B2 %></th>
+		<th><%= peo.shift.A3 %></th>
+		<th><%= peo.shift.B3 %></th>
+		<th><%= peo.shift.A4 %></th>
+		<th><%= peo.shift.B4 %></th>
+		<th><%= peo.shift.A5 %></th>
+		<th><%= peo.shift.B5 %></th>
+		<th><%= peo.shift.A6 %></th>
+	</tr>
+<% end %>
 
 <%= link_to 'Back', people_path %>

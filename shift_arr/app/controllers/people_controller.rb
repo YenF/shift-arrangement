@@ -11,6 +11,7 @@ class PeopleController < ApplicationController
   # GET /people/1
   # GET /people/1.json
   def show
+  	@people = Person.order(:pid)
   end
 
   # GET /people/new
@@ -90,6 +91,6 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:name, :pid, :AB_4, :AB_14, :with_whom)
+      params.require(:person).permit(:name, :pid, :AB_4, :AB_14, :A6_4, :with_whom)
     end
 end

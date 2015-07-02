@@ -2,13 +2,13 @@
 
 <h1>Listing People</h1>
 
-<table>
+<table border=2>
   <thead>
     <tr>
       <th>ID</th>
       <th>Name</th>
       <th>Shifts</th>
-      <th>With</th>
+<!--      <th>with</th>	-->
       <th colspan="5"></th>
     </tr>
   </thead>
@@ -25,13 +25,17 @@
 			<% if person.AB_14 %>
 			<%= "AB_14 " %>
 			<% end %>
+			<% if person.A6_4 %>
+			<%= "A6 " %>
+			<% end %>
         </td>
+<!--
         <td>
         	<% if person.with_whom!=nil && person.with_whom!="" %>
         	<%= Person.find(person.with_whom).name %>
         	<% end %>
         </td>
-        
+-->
         <td><%= button_to 'Edit', edit_person_path(person), :method => :get %></td>
         <td><%= button_to 'Destroy', person, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -42,4 +46,4 @@
 <br>
 
 <%= button_to 'New Person', new_person_path, :method => :get %>
-<%= button_to 'Generate Table', "/people/people#generateTable", :method => :get %>
+<%= button_to 'Generate Table', "/people/generateTable", :method => :get %>

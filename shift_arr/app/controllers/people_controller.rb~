@@ -11,6 +11,7 @@ class PeopleController < ApplicationController
   # GET /people/1
   # GET /people/1.json
   def show
+  	@people = Person.order(:pid)
   end
 
   # GET /people/new
@@ -80,10 +81,6 @@ class PeopleController < ApplicationController
       format.html { redirect_to people_url, notice: 'Person was successfully destroyed.' }
       #format.json { head :no_content }
     end
-  end
-  
-  def generateTable
-  
   end
 
   private
