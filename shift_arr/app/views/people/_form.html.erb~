@@ -27,6 +27,7 @@
 	<%= f.label :A6_4 %>
     <%= f.check_box :A6_4 %>
   </div>
+<!--
   <div class="field">
     <%= f.label :with_whom %><br>
     <% if @person.id != nil %>
@@ -34,11 +35,8 @@
     <% else %>
     <%= f.collection_select(:with_whom, Person.all.where("with_whom = ?","") , :id, :name, :include_blank => true) %>
     <% end %>
-    <%# Problems: 
-    	1. can't select 'none' 
-    %>
   </div>
-
+-->
   <div class="actions">
     <%= f.submit %>
   </div>

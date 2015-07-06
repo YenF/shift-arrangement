@@ -1,8 +1,4 @@
-<p><%= flash[:error] %> <br>
-	Download as:
-	<%= link_to "Excel", "show.xls" %>
-</p>
-
+<p><%= flash[:error] %></p>
 
 <table border=2 align="center" width="80%">
 <caption> Arranged Shift </caption>
@@ -50,5 +46,3 @@
 		<th><%= peo.shift.A6 %></th>
 	</tr>
 <% end %>
-
-<%= link_to 'Back', people_path %>

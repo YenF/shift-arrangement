@@ -7,7 +7,7 @@
     <tr>
       <th>ID</th>
       <th>Name</th>
-      <th>Shifts</th>
+      <th>Special Shifts</th>
 <!--      <th>with</th>	-->
       <th colspan="5"></th>
     </tr>
@@ -19,11 +19,13 @@
         <td><%= person.pid %></td>      
         <td><%= person.name %></td>
         <td>
+<!--
 			<% if person.AB_4 %>
-			<%= "AB_4 " %>
+			<%= "4  " %>
 			<% end %>
+-->
 			<% if person.AB_14 %>
-			<%= "AB_14 " %>
+			<%= "14  " %>
 			<% end %>
 			<% if person.A6_4 %>
 			<%= "A6 " %>
@@ -42,8 +44,14 @@
     <% end %>
   </tbody>
 </table>
-
+<%= link_to 'Current Table', 'people/show', :method=> :get %>
 <br>
+<%= form_tag({:controller => "people", :action=>"generateTable"}, :method => "post") do %>
+	<%= label_tag("People work on Saturday") %>
+	<%= select_tag(:peopleForA6, options_for_select([['1',1],['2',2],['3',3],['4',4],['5',5]],params[:peopleForA6].to_i)) #maximum would be 5 so that everyday could only has one person off 
+	%>
+	<%= submit_tag("Generate Table") %>
+<% end %>
+<!-- we need form to submit data!! -->
 
 <%= button_to 'New Person', new_person_path, :method => :get %>
-<%= button_to 'Generate Table', "/people/generateTable", :method => :get %>

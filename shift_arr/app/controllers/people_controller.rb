@@ -12,6 +12,12 @@ class PeopleController < ApplicationController
   # GET /people/1.json
   def show
   	@people = Person.order(:pid)
+  	#@peopleForA6 = params[:peopleForA6]   #It's OK!
+
+  	respond_to do |format|
+	  	format.html
+  		format.xls
+  	end
   end
 
   # GET /people/new
@@ -31,11 +37,11 @@ class PeopleController < ApplicationController
     respond_to do |format|
       if @person.save
         format.html { redirect_to "/people", notice: 'Person was successfully created.' }
-        if @person.with_whom!=""
-        	p = Person.find(@person.with_whom)
-        	p.with_whom = @person.id
-        	p.save
-       	end
+        #if @person.with_whom!=""
+        #	p = Person.find(@person.with_whom)
+        #	p.with_whom = @person.id
+        #	p.save
+       	#end
         #format.json { render :show, status: :created, location: @person }
       else
         format.html { render :new }
@@ -52,17 +58,17 @@ class PeopleController < ApplicationController
     	oldPersonWith = @person.with_whom
       if @person.update_attributes(person_params)
         format.html { redirect_to people_url, notice: 'Person was successfully updated.' }
-        if @person.with_whom!=""
-        	p = Person.find(@person.with_whom)
-        	p.with_whom = @person.id
-        	p.save
-        else
-        	if oldPersonWith != ""
-        		p = Person.find(oldPersonWith)
-        		p.with_whom = ""
-        		p.save
-        	end
-       	end
+        #if @person.with_whom!=""
+        #	p = Person.find(@person.with_whom)
+        #	p.with_whom = @person.id
+        #	p.save
+        #else
+        #	if oldPersonWith != ""
+        #		p = Person.find(oldPersonWith)
+        #		p.with_whom = ""
+        #		p.save
+        #	end
+       	#end
         	#we need to change THE OTHER person's value to him
         # @person to "show" page, people_url to index...
         #format.json { render :show, status: :ok, location: @person }
@@ -82,7 +88,124 @@ class PeopleController < ApplicationController
       #format.json { head :no_content }
     end
   end
-
+	
+	def generateTable
+		mon14=2
+		tue14=2
+		thr14=2
+		total14 = mon14+tue14+thr14
+		# 2 people left to be assigned
+		sat4=params[:peopleForA6].to_i
+		@satPeople = sat4
+		dayOff = [0,0,0,0,0,0] #index 0~5, use 1~5
+		#sat = morning shift for 4 people, need to cut one shift from M~F af
+		totalAB_14 = Person.where(:AB_14 => true).count
+		totalA6_4 = Person.where(:A6_4 => true).count
+		#reset shifts
+		Shift.destroy_all #due to one to one association, we clear the shift every time to keep it clean.
+	
+		Person.all.each do |p|
+			#Create a default shift with all shift "4", then change something.
+			s = Shift.create(:A1=>nil, :A2=>nil, :A3=>nil, :A4=>nil, :A5=>nil,
+				:B1=>nil, :B2=>nil, :B3=>nil, :B4=>nil, :B5=>nil, :A6=>nil)
+			#we random person by person, then go into its shift
+			place14 = false #set to false to prevent bug
+			##########
+			placeA6 = false
+			#do not need hasA6
+		
+			if p.AB_14==true # random if assigned
+				if rand(1..totalAB_14)<=total14 #1~8 have 6
+					place14 = true
+					total14-=1
+					#now we decide which day
+					while true do
+						putOn = rand(1..3) #1=Mon 2=Tue 3=Thr
+						if putOn==1 && mon14!=0  
+							mon14-=1 
+							break 
+						end
+						if putOn==2 && tue14!=0  
+							tue14-=1 
+							break 
+						end
+						if putOn==3 && thr14!=0  
+							thr14-=1 
+							break 
+						end
+					end #rand until find a solution...
+					if putOn==1
+						s.A1=14
+						s.B1=14
+					end
+					if putOn==2
+						s.A2=14
+						s.B2=14
+					end
+					if putOn==3
+						s.A4=14
+						s.B4=14
+					end
+				end
+				totalAB_14-=1 #anyway totalAB_14 will minus 1 so that people afterward will 
+			end
+			if p.A6_4==true 
+				if rand(1..totalA6_4)<=sat4
+					s.A6=4
+					sat4 -= 1 #4 -> 3
+					times=0
+					while true do
+						times+=1
+						if times>10000
+							flash[:error] = "There are some issues so that the table may not be correct, please press \"F5\" to refresh"
+							break
+						end 
+						#may have a issue: left only 14 to off => will never go out of loop
+						shiftOff = rand(1..5) #decide which day afternoon bye~
+						if shiftOff==1 && dayOff[shiftOff]==0
+							if s.B1 != 14 #AB_14 couldn't off!
+								s.B1 = 0
+								dayOff[shiftOff]=1
+								break
+							end
+						end
+						if shiftOff==2 && dayOff[shiftOff]==0
+							if s.B2 != 14 #AB_14 couldn't off!
+								s.B2 = 0
+								dayOff[shiftOff]=1
+								break
+							end
+						end
+						if shiftOff==3 && dayOff[shiftOff]==0
+							if s.B3 != 14 #AB_14 couldn't off!
+								s.B3 = 0
+								dayOff[shiftOff]=1
+								break
+							end
+						end
+						if shiftOff==4 && dayOff[shiftOff]==0
+							if s.B4 != 14 #AB_14 couldn't off!
+								s.B4 = 0
+								dayOff[shiftOff]=1
+								break
+							end
+						end
+						if shiftOff==5 && dayOff[shiftOff]==0
+							if s.B5 != 14 #AB_14 couldn't off!
+								s.B5 = 0
+								dayOff[shiftOff]=1
+								break
+							end
+						end
+					end #while shiftOff
+				end
+				totalA6_4 -= 1
+			end #if A6_4
+			s.save
+			p.shift=s
+		end #each person
+		redirect_to "/people/show"
+	end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_person
@@ -91,6 +214,6 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:name, :pid, :AB_4, :AB_14, :A6_4, :with_whom)
+      params.require(:person).permit(:name, :pid, :AB_4, :AB_14, :A6_4, :with_whom, :peopleForA6)
     end
 end
