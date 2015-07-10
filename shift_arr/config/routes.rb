@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-	root 'people#index'
-	#post 'people/generateTable' => 'people#show'
+	root 'people#intro'
+	get 'people/intro' => 'people#intro'
   resources :people
   resources(:events)
   # The priority is based upon order of creation: first created -> highest priority.
