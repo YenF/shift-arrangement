@@ -17,13 +17,21 @@ class PeopleController < ApplicationController
   		flash.now[:danger] = "Please Login"
   		redirect_to root_url
   	end
-    @people = Person.order(:pid)
+    @people = Person.rank(:position).all
+  end
+
+  def update_position
+  	@people = Person.find(person_params[:person_id])
+  	@people.position_position = person_params[:position_position]
+  	@people.save
+
+  	render nothing: true
   end
 
   # GET /people/1
   # GET /people/1.json
   def show
-  	@people = Person.order(:pid)
+  	@people = Person.rank(:position).all
   	#@peopleForA6 = params[:peopleForA6]   #It's OK!
 
   	respond_to do |format|
@@ -226,6 +234,6 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:name, :pid, :AB_4, :AB_14, :A6_4, :with_whom, :peopleForA6)
+      params.require(:person).permit(:name, :pid, :AB_4, :AB_14, :A6_4, :with_whom, :peopleForA6, :person_id, :position_position)
     end
 end
