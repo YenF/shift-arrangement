@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+#for draggable list
+gem 'ranked-model'
 
 gem 'bootstrap-sass'
 #for heroku!!

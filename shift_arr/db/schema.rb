@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150630115734) do
+ActiveRecord::Schema.define(version: 20150711065957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20150630115734) do
     t.string   "pid"
     t.boolean  "A6_4"
     t.boolean  "arranged?"
+    t.integer  "position"
   end
 
   create_table "shifts", force: :cascade do |t|

@@ -1,6 +1,10 @@
 class PeopleController < ApplicationController
   before_action :set_person, only: [:edit, :update, :destroy]
 
+  def authen
+
+  end
+
   def intro
   	
   end
@@ -9,6 +13,10 @@ class PeopleController < ApplicationController
   # GET /people.json
   def index
   	#people need to be arranged by id
+  	if session[:user_id] == nil
+  		flash.now[:danger] = "Please Login"
+  		redirect_to root_url
+  	end
     @people = Person.order(:pid)
   end
 

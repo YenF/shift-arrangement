@@ -1,4 +1,7 @@
 <!-- This is to have a login page -->
+<% flash.each do |message_type, message| %>
+	<div class="alert alert-<%= message_type %>"><%= message %> </div>
+<% end %>
 <div class="center jumbotron">
   <h1>信義健保局藥劑科排班程式</h1>
 
@@ -6,7 +9,10 @@
     此排班程式可隨機產生一組班表<br>
     並可以ＥＸＣＥＬ檔案下載<br>
   </h2>
-
-  <%= link_to "開始使用", '/people', { :method => :get, class: "btn btn-lg btn-primary"} %>
+  <%= form_for(:session, url: login_path) do |f| %>
+    <%= f.label "請輸入密碼" %>
+	  <%= f.password_field :password, class: 'form_control' %>
+	  <%= f.submit "開始使用", class: "btn btn-primary" %>
+  <% end %> 
 </div>
 <%= link_to image_tag("rails.png", alt: "Rails logo"), 'http://rubyonrails.org/' %>
