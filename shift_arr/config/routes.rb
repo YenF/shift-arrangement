@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   delete 'logout' => 'sessions#destroy'
 	
 	get 'people/intro' => 'people#intro'
+  get 'people/help' => 'people#help'
   #post 'people/index' => 'people#index'
   resources :people do
     post :update_position, on: :collection
